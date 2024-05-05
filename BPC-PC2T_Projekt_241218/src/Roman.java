@@ -1,7 +1,9 @@
 
-public class Roman extends Kniha{
+public class Roman extends Kniha
+{
 
-    public enum ZanrRomanu{
+    public enum ZanrRomanu
+    {
         Bukolicky,
 		Rytirsky,
 		Pikareskni,
@@ -11,11 +13,14 @@ public class Roman extends Kniha{
 
     public ZanrRomanu zanr;
 
-    public Roman(String nazev, String[] autori, int datumVydani, boolean dostupnost, ZanrRomanu zanr){
+    public Roman(String nazev, String[] autori, int datumVydani, boolean dostupnost, ZanrRomanu zanr)
+    {
         super(nazev, autori, datumVydani, dostupnost, SpecifikaceKnihy.Roman);
         this.zanr = zanr;
     }
-    public ZanrRomanu getZanrRomanu() {
+
+    public ZanrRomanu getZanrRomanu()
+    {
         return zanr;
     }
 }

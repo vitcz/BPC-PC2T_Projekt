@@ -1,12 +1,11 @@
 import java.util.*;
+import java.io.*;
 
-
-public class App {
+public class App
+{
     
     static ArrayList<Kniha> serazeno;
     static TreeMap<String, Kniha> mojeDatabaze = new TreeMap<String, Kniha>();
-    //static String nazev;
-    //static int specifikace;
     static String zanr;
 
     public static int pouzeCelaCisla(Scanner sc) 
@@ -80,6 +79,7 @@ public class App {
         String[] autori;
         boolean run = true;
         int moznosti;
+        String cesta = "knihy/";
         while (run)
         {
             System.out.println("vyberte pozadovanou cinnost:");
@@ -230,14 +230,15 @@ public class App {
                         else if (najdiKnihu instanceof Ucebnice)
                         {
                             Ucebnice ucebnice = (Ucebnice) najdiKnihu;
-                            System.out.println("Vhodná pro: " + ucebnice.getRocnik() + ". ročník");
+                            System.out.println("Vhodná pro ročník: " + ucebnice.getRocnik());
                         }
                         System.out.println();
                         sc.nextLine();
                     }
                     break;
                 case 6:
-                    try{
+                    try
+                    {
                         System.out.println("Zadejte nazev knihy");
                         nazevKnihy = sc.next();
                         if(mojeDatabaze.containsKey(nazevKnihy))
@@ -307,15 +308,85 @@ public class App {
                     for(Map.Entry<String,Kniha> entry : mojeDatabaze.entrySet())
                     {
                         kniha = entry.getValue();
-                        if(!kniha.getDostupnost()){
+                        if(!kniha.getDostupnost())
+                        {
                             System.out.println(kniha.getNazev());
                         }
                         sc.nextLine();
                     }
                     break;
                 case 10:
+                    try
+                    {
+                        System.out.println("Napište název knihy, kterou chcete uložit do souboru");
+                        nazevKnihy = sc.next();
+                        if(mojeDatabaze.containsKey(nazevKnihy))
+                        {   
+                            PrintWriter out = new PrintWriter(new File(nazevKnihy + ".txt"));
+                            najdiKnihu = mojeDatabaze.get(nazevKnihy);
+                            out.println("Nazev knihy: " + najdiKnihu.getNazev() + "\nAutori: " + najdiKnihu.getAutori() + "\nDatum vydani: " + najdiKnihu.getDatumVydani() + "\nJe kniha dostupná: " + najdiKnihu.getDostupnost() + "\nSpecifikace: " + najdiKnihu.getSpecifikace());
+                            
+                            if (najdiKnihu instanceof Roman)
+                            {
+                                Roman roman = (Roman) najdiKnihu;
+                                out.println("Zanr: " + roman.getZanrRomanu());
+                            } 
+                            else if (najdiKnihu instanceof Ucebnice)
+                            {
+                                Ucebnice ucebnice = (Ucebnice) najdiKnihu;
+                                out.println("Vhodná pro: " + ucebnice.getRocnik() + ". ročník");
+                            }
+                            out.close();
+                            sc.nextLine();
+                        }
+                    }
+                    catch(NullPointerException | FileNotFoundException e)
+                    {
+                        System.out.println("Tato kniha neni v databazi");
+                        sc.nextLine();
+                    }
+                    sc.nextLine();
                     break;
                 case 11:
+                        System.out.println("Napište název knihy, kterou chcete načíst ze souboru");
+                        nazevKnihy = sc.next();
+                        File souborSKnihou = new File(nazevKnihy + ".txt");
+                        try(Scanner ctecka = new Scanner(souborSKnihou))
+                        {
+                            nazevKnihy = ctecka.nextLine();
+                            String[] nazevKnihyCasti = nazevKnihy.split(": ");
+                            nazevKnihy = nazevKnihyCasti[1];
+                            String autor = ctecka.nextLine();
+                            String[] autorCasti = autor.split(": ");
+                            autor = autorCasti[1];
+                            String datumVydaniString = ctecka.nextLine();
+                            String[] datumVydaniCasti = datumVydaniString.split(": ");
+                            datumVydani = Integer.parseInt(datumVydaniCasti[1]);
+                            String dostupnostString = ctecka.nextLine();
+                            String[] dostupnostCasti = dostupnostString.split(": ");
+                            boolean dostupnost = Boolean.parseBoolean(dostupnostCasti[1]);
+                            String specifikaceString = ctecka.nextLine();
+                            String[] specifikaceStringu = specifikaceString.split(": ");
+                            specifikaceString = specifikaceStringu[1];
+                            if ("Roman".equals(specifikaceString))
+                            {
+                                Roman.ZanrRomanu zanr = Roman.ZanrRomanu.valueOf(ctecka.nextLine());
+                                mojeDatabaze.put(nazevKnihy, new Roman(nazevKnihy, autor.split(", "), datumVydani, dostupnost, zanr));    
+                            }
+                            else if("Ucebnice".equals(specifikaceString))
+                            {
+                                String rocnikString =ctecka.nextLine();
+                                String[] rocnikCasti = rocnikString.split(": ");
+                                rocnikString = rocnikCasti[1];
+                                int rocnik = Integer.parseInt(rocnikString);
+                                mojeDatabaze.put(nazevKnihy, new Ucebnice(nazevKnihy, autor.split(", "), datumVydani, dostupnost, rocnik));
+                            }
+                            System.out.println("Kniha byla uspesne nactena");
+                        }
+                        catch(FileNotFoundException e)
+                        {
+                            System.out.println("Soubor neexistuje");
+                        }
                     break;
                 case 12:
                     System.out.println("Program byl ukoncen");

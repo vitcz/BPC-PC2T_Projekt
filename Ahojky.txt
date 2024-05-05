@@ -1,0 +1,6 @@
+Nazev knihy: Ahojky
+Autori: asdkl,asdjf
+Datum vydani: 2000
+Je kniha dostupná: false
+Specifikace: Roman
+Zanr: Historicky

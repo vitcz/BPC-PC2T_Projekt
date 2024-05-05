@@ -1,5 +1,6 @@
 
-public class Kniha {
+public class Kniha
+{
 
 	public String nazev;
 	public String[] autori;
@@ -32,38 +33,38 @@ public class Kniha {
 		autor = String.join(", ", this.autori);
 		return autor;
 	}
-	public String setAutori(String[] poleAutoru){
+	
+	public String setAutori(String[] poleAutoru)
+	{
 		this.autori = poleAutoru;
 		autor = String.join(", ", this.autori);
         return autor;
 	}
 	
-	public int getDatumVydani() {
+	public int getDatumVydani()
+	{
 		return datumVydani;
     }
 
-	public int setDatumVydani(int noveDatumVydani){
+	public int setDatumVydani(int noveDatumVydani)
+	{
 		this.datumVydani = noveDatumVydani;
 		return datumVydani;	
 	}
-	public  boolean getDostupnost() {
+
+	public  boolean getDostupnost()
+	{
 		return dostupnost;
     }
 
-	public boolean setDostupnost(boolean dostupnost) {
+	public boolean setDostupnost(boolean dostupnost)
+	{
 		this.dostupnost = dostupnost;
         return true;
 	}
 
-	public  SpecifikaceKnihy getSpecifikace() {
+	public  SpecifikaceKnihy getSpecifikace()
+	{
 		return specifikace;
-    }
-	
-	//public int getSpecifikaceKnihy() {
-	//	if (specifikace == SpecifikaceKnihy.Roman) 
-	//		return 0;
-	//	else
-	//	    return 1;
-	//}
-	
+    }	
 }

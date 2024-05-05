@@ -19,7 +19,7 @@ public class Kniha
 		this.nazev = nazev;
 		this.autori = autori;
 		this.datumVydani = datumVydani;
-		this.dostupnost = false;
+		this.dostupnost = true;
 		this.specifikace = specifikace;
 	}
 	

@@ -1,6 +1,0 @@
-Nazev knihy: Ahojda
-Autori: Clovek,Clovek2
-Datum vydani: 2000
-Je kniha dostupná: false
-Specifikace: Ucebnice
-Vhodná pro ročník: 5

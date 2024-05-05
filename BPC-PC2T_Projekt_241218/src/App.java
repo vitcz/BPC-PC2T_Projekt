@@ -61,7 +61,7 @@ public class App
             }
             catch(InputMismatchException e)
             {
-                System.out.println("Neplatný vstup. Zadejte prosim cislo 0 nebo 1");
+                System.out.println("Neplatny vstup. Zadejte prosim cislo 0 nebo 1");
                 sc.next();
             }
         }
@@ -79,19 +79,18 @@ public class App
         String[] autori;
         boolean run = true;
         int moznosti;
-        String cesta = "knihy/";
         while (run)
         {
             System.out.println("vyberte pozadovanou cinnost:");
-            System.out.println("1 .. pridani nove knihy");//hotovo
-            System.out.println("2 .. uprava knihy");//hotovo
-            System.out.println("3 .. smazani knihy");//hotovo
-            System.out.println("4 .. oznaceni knihy vypujcena/vracena");//hotovo
-            System.out.println("5 .. vypis knih");//hotovo
-            System.out.println("6 .. vyhledani knihy");//hotovo
-            System.out.println("7 .. vypis vsech knih daneho autora");//hotovo
-            System.out.println("8 .. vypis knih daneho zanru");//hotovo
-            System.out.println("9 .. vypis vypujcenych knih");//hotovo
+            System.out.println("1 .. pridani nove knihy");
+            System.out.println("2 .. uprava knihy");
+            System.out.println("3 .. smazani knihy");
+            System.out.println("4 .. oznaceni knihy vypujcena/vracena");
+            System.out.println("5 .. vypis knih");
+            System.out.println("6 .. vyhledani knihy");
+            System.out.println("7 .. vypis vsech knih daneho autora");
+            System.out.println("8 .. vypis knih daneho zanru");
+            System.out.println("9 .. vypis vypujcenych knih");
             System.out.println("10 .. Ulozeni knihy do souboru");
             System.out.println("11 .. nacteni knihy ze souboru");
             System.out.println("12 .. ukonceni programu");
@@ -120,16 +119,17 @@ public class App
                         {
                             System.out.println("Vybrali jste Roman");
                             Roman.ZanrRomanu zanr = null;
-                            while (zanr == null) {
+                            while (zanr == null)
+                            {
                                 System.out.println("Vyberte jeden z zanru romanu: Bukolicky, Rytirsky, Pikareskni, Historicky, Biograficky");
                                 String zanry = sc.next();
                                 try
                                 {
                                     zanr = Roman.ZanrRomanu.valueOf(zanry);
                                 }
-                                catch(IllegalArgumentException e)
+                                catch(InputMismatchException e)
                                 {
-                                    System.out.println("Tento žánr neexistuje. Prosim opakujte akci.");
+                                    System.out.println("Tento zanr neexistuje. Prosim opakujte akci.");
                                 }
                             }
                             mojeDatabaze.put(nazev, new Roman(nazev, autori, datumVydani, true, zanr));
@@ -145,13 +145,13 @@ public class App
                         }
                     }
                 case 2:
-                    System.out.println("Zadejte název knihy, kterou chcete upravit:");
+                    System.out.println("Zadejte nazev knihy, kterou chcete upravit:");
                     nazevKnihy = sc.next();
 
                     if (mojeDatabaze.containsKey(nazevKnihy))
                     {
                         Kniha upravitKnihu = mojeDatabaze.get(nazevKnihy);
-                        System.out.println("Zadejte nový rok vydání knihy (nebo ponechte prazdne pro zachovani puvodni hodnoty)");
+                        System.out.println("Zadejte novy rok vydani knihy (nebo ponechte prazdne pro zachovani puvodni hodnoty)");
                         sc.nextLine();
                         String noveDatumVydani = sc.nextLine();
 
@@ -159,7 +159,7 @@ public class App
                         {
                             upravitKnihu.setDatumVydani(Integer.parseInt(noveDatumVydani));
                         }
-                        System.out.println("Zadejte nové autora/y knihy (nebo ponechte prazdne pro zachovani puvodni hodnoty)");
+                        System.out.println("Zadejte nove autora/y knihy (nebo ponechte prazdne pro zachovani puvodni hodnoty)");
                         String noviAutori = sc.nextLine();
 
                         if(!noviAutori.isEmpty())
@@ -167,7 +167,7 @@ public class App
                           String[]  poleAutoru = noviAutori.split(", ");
                             upravitKnihu.setAutori(poleAutoru);
                         }
-                        System.out.println("Chcete změnit dostupnost knihy? ano/ne");
+                        System.out.println("Chcete zmenit dostupnost knihy? ano/ne");
                         String anoNe = sc.nextLine();
 
                         if (anoNe.equalsIgnoreCase("ano")) 
@@ -178,7 +178,7 @@ public class App
                     }
                     else
                     {
-                        System.out.println("Kniha s názvem " + nazevKnihy + " nebyla nalezena v databazi.");  
+                        System.out.println("Kniha s nazvem " + nazevKnihy + " nebyla nalezena v databazi.");  
                     }
                     sc.nextLine();
                     break;
@@ -198,14 +198,14 @@ public class App
                     sc.nextLine();
                     break;
                 case 4:
-                    System.out.println("Napište název knihy u které chcete změnit dostupnost.");
+                    System.out.println("Napiste nazev knihy u ktere chcete zmenit dostupnost.");
                     nazevKnihy = sc.next();
                     if (mojeDatabaze.containsKey(nazevKnihy))
                     {
                         najdiKnihu = mojeDatabaze.get(nazevKnihy);
                         boolean novaDostupnost = !najdiKnihu.getDostupnost();
                         najdiKnihu.setDostupnost(novaDostupnost);
-                        System.out.println("Dostupnost knihy " + nazevKnihy + " byla změněna na: " + novaDostupnost);
+                        System.out.println("Dostupnost knihy " + nazevKnihy + " byla zmenena na: " + novaDostupnost);
                         sc.nextLine();
                     }
                     else
@@ -214,13 +214,13 @@ public class App
                     }
                     break;
                 case 5:
-                    System.out.println("Toto jsou všechny knihy v databázi: ");
+                    System.out.println("Toto jsou vsechny knihy v databazi: ");
                     System.out.println();
 
                     for (Map.Entry<String, Kniha> entry : mojeDatabaze.entrySet())
                     {
                         najdiKnihu = entry.getValue();
-                        System.out.println("Nazev knihy: " + najdiKnihu.getNazev() + "\nAutori: " + najdiKnihu.getAutori() + "\nDatum vydani: " + najdiKnihu.getDatumVydani() + "\nJe kniha dostupná: " + najdiKnihu.getDostupnost()  + "\nSpecifikace: " + najdiKnihu.getSpecifikace());
+                        System.out.println("Nazev knihy: " + najdiKnihu.getNazev() + "\nAutori: " + najdiKnihu.getAutori() + "\nDatum vydani: " + najdiKnihu.getDatumVydani() + "\nJe kniha dostupna: " + najdiKnihu.getDostupnost()  + "\nSpecifikace: " + najdiKnihu.getSpecifikace());
                         
                         if (najdiKnihu instanceof Roman)
                         {
@@ -230,7 +230,7 @@ public class App
                         else if (najdiKnihu instanceof Ucebnice)
                         {
                             Ucebnice ucebnice = (Ucebnice) najdiKnihu;
-                            System.out.println("Vhodná pro ročník: " + ucebnice.getRocnik());
+                            System.out.println("Vhodna pro rocnik: " + ucebnice.getRocnik());
                         }
                         System.out.println();
                         sc.nextLine();
@@ -244,7 +244,7 @@ public class App
                         if(mojeDatabaze.containsKey(nazevKnihy))
                         {
                             najdiKnihu = mojeDatabaze.get(nazevKnihy);
-                            System.out.println("Nazev knihy: " + najdiKnihu.getNazev() + "\nAutori: " + najdiKnihu.getAutori() + "\nDatum vydani: " + najdiKnihu.getDatumVydani() + "\nJe kniha dostupná: " + najdiKnihu.getDostupnost() + "\nSpecifikace: " + najdiKnihu.getSpecifikace());
+                            System.out.println("Nazev knihy: " + najdiKnihu.getNazev() + "\nAutori: " + najdiKnihu.getAutori() + "\nDatum vydani: " + najdiKnihu.getDatumVydani() + "\nJe kniha dostupna: " + najdiKnihu.getDostupnost() + "\nSpecifikace: " + najdiKnihu.getSpecifikace());
                             
                             if (najdiKnihu instanceof Roman)
                             {
@@ -254,7 +254,7 @@ public class App
                             else if (najdiKnihu instanceof Ucebnice)
                             {
                                 Ucebnice ucebnice = (Ucebnice) najdiKnihu;
-                                System.out.println("Vhodná pro: " + ucebnice.getRocnik() + ". ročník");
+                                System.out.println("Vhodna pro: " + ucebnice.getRocnik() + ". rocnik");
                             }
                             sc.nextLine();
                         }
@@ -267,7 +267,7 @@ public class App
                     sc.nextLine();
                     break;
                 case 7:
-                    System.out.println("Zadejte jméno autora.");
+                    System.out.println("Zadejte jmeno autora.");
                     String autorHledat = sc.next();
                     for (Map.Entry<String, Kniha> entry : mojeDatabaze.entrySet())
                     {
@@ -284,9 +284,9 @@ public class App
                     }
                     break;
                 case 8:
-                    System.out.println("Zadejte žánr který chcete vyhledat");
+                    System.out.println("Zadejte zanr ktery chcete vyhledat");
                     String zanrHledat = sc.next();
-                    System.out.println("Název knihy obsahující daný žánr:\n");
+                    System.out.println("Nazev knihy obsahujici dany zanr:\n");
                     for (Map.Entry<String, Kniha> entry : mojeDatabaze.entrySet())
                     {
                         kniha = entry.getValue();
@@ -304,7 +304,7 @@ public class App
                     }
                     break;
                 case 9:
-                    System.out.println("Seznam vypůjčených knih:");
+                    System.out.println("Seznam vypujcenych knih:");
                     for(Map.Entry<String,Kniha> entry : mojeDatabaze.entrySet())
                     {
                         kniha = entry.getValue();
@@ -318,13 +318,13 @@ public class App
                 case 10:
                     try
                     {
-                        System.out.println("Napište název knihy, kterou chcete uložit do souboru");
+                        System.out.println("Napiste nazev knihy, kterou chcete ulozit do souboru");
                         nazevKnihy = sc.next();
                         if(mojeDatabaze.containsKey(nazevKnihy))
                         {   
                             PrintWriter out = new PrintWriter(new File(nazevKnihy + ".txt"));
                             najdiKnihu = mojeDatabaze.get(nazevKnihy);
-                            out.println("Nazev knihy: " + najdiKnihu.getNazev() + "\nAutori: " + najdiKnihu.getAutori() + "\nDatum vydani: " + najdiKnihu.getDatumVydani() + "\nJe kniha dostupná: " + najdiKnihu.getDostupnost() + "\nSpecifikace: " + najdiKnihu.getSpecifikace());
+                            out.println("Nazev knihy: " + najdiKnihu.getNazev() + "\nAutori: " + najdiKnihu.getAutori() + "\nDatum vydani: " + najdiKnihu.getDatumVydani() + "\nJe kniha dostupna: " + najdiKnihu.getDostupnost() + "\nSpecifikace: " + najdiKnihu.getSpecifikace());
                             
                             if (najdiKnihu instanceof Roman)
                             {
@@ -334,7 +334,7 @@ public class App
                             else if (najdiKnihu instanceof Ucebnice)
                             {
                                 Ucebnice ucebnice = (Ucebnice) najdiKnihu;
-                                out.println("Vhodná pro: " + ucebnice.getRocnik() + ". ročník");
+                                out.println("Vhodna pro: " + ucebnice.getRocnik() + ". rocnik");
                             }
                             out.close();
                             sc.nextLine();
@@ -348,7 +348,7 @@ public class App
                     sc.nextLine();
                     break;
                 case 11:
-                        System.out.println("Napište název knihy, kterou chcete načíst ze souboru");
+                        System.out.println("Napiste nazev knihy, kterou chcete nacist ze souboru");
                         nazevKnihy = sc.next();
                         File souborSKnihou = new File(nazevKnihy + ".txt");
                         try(Scanner ctecka = new Scanner(souborSKnihou))

@@ -6,7 +6,7 @@ public class Roman extends Kniha{
 		Rytirsky,
 		Pikareskni,
 		Historicky,
-		Biografick
+		Biograficky
     }
 
     public ZanrRomanu zanr;

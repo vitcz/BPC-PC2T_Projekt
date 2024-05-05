@@ -73,7 +73,7 @@ public class App {
         Scanner sc = new Scanner(System.in);
         String nazev;
         int specifikace;
-        
+        Kniha kniha;
         String nazevKnihy;
         Kniha najdiKnihu;
         int datumVydani;
@@ -89,9 +89,9 @@ public class App {
             System.out.println("4 .. oznaceni knihy vypujcena/vracena");//hotovo
             System.out.println("5 .. vypis knih");//hotovo
             System.out.println("6 .. vyhledani knihy");//hotovo
-            System.out.println("7 .. vypis vsech knih daneho autora");
-            System.out.println("8 .. vypis knih daneho zanru");
-            System.out.println("9 .. vypis vypujcenych knih");
+            System.out.println("7 .. vypis vsech knih daneho autora");//hotovo
+            System.out.println("8 .. vypis knih daneho zanru");//hotovo
+            System.out.println("9 .. vypis vypujcenych knih");//hotovo
             System.out.println("10 .. Ulozeni knihy do souboru");
             System.out.println("11 .. nacteni knihy ze souboru");
             System.out.println("12 .. ukonceni programu");
@@ -119,17 +119,18 @@ public class App {
                         if (specifikace == 0)
                         {
                             System.out.println("Vybrali jste Roman");
-                            System.out.println("Vyberte jeden z zanru romanu: Bukolicky, Rytirsky, Pikareskni, Historicky, Biografick");
                             Roman.ZanrRomanu zanr = null;
-                            String zanry = sc.next();
-                            System.out.println("Vybrali jste zanr: " + zanry);
-                            try
-                            {
-                                zanr = Roman.ZanrRomanu.valueOf(zanry);
-                            }
-                            catch (IllegalArgumentException e)
-                            {
-                                System.out.println("Tento zanr neni ve vyberu. Prosim opakujte akci.");
+                            while (zanr == null) {
+                                System.out.println("Vyberte jeden z zanru romanu: Bukolicky, Rytirsky, Pikareskni, Historicky, Biograficky");
+                                String zanry = sc.next();
+                                try
+                                {
+                                    zanr = Roman.ZanrRomanu.valueOf(zanry);
+                                }
+                                catch(IllegalArgumentException e)
+                                {
+                                    System.out.println("Tento žánr neexistuje. Prosim opakujte akci.");
+                                }
                             }
                             mojeDatabaze.put(nazev, new Roman(nazev, autori, datumVydani, true, zanr));
                             break;
@@ -138,7 +139,7 @@ public class App {
                         {
                             System.out.println("Vybrali jste Ucebnici");
                             System.out.println("Zadejte pro jaky rocnik je ucebnice vhodna: ");
-                            int rocnik = sc.nextInt();
+                            int rocnik = pouzeCisla(sc);
                             mojeDatabaze.put(nazev, new Ucebnice(nazev, autori, datumVydani, true, rocnik));
                             break;
                         }
@@ -265,10 +266,52 @@ public class App {
                     sc.nextLine();
                     break;
                 case 7:
+                    System.out.println("Zadejte jméno autora.");
+                    String autorHledat = sc.next();
+                    for (Map.Entry<String, Kniha> entry : mojeDatabaze.entrySet())
+                    {
+                        kniha = entry.getValue();
+                        String[] autorKnihy = kniha.getAutori().split(",");
+                        for (String autor : autorKnihy)
+                        {
+                            if (autor.trim().equalsIgnoreCase(autorHledat.trim())) 
+                            {
+                                System.out.println("Nazev knihy: " + kniha.getNazev()); 
+                            }
+                            System.out.println();
+                        }
+                    }
                     break;
                 case 8:
+                    System.out.println("Zadejte žánr který chcete vyhledat");
+                    String zanrHledat = sc.next();
+                    System.out.println("Název knihy obsahující daný žánr:\n");
+                    for (Map.Entry<String, Kniha> entry : mojeDatabaze.entrySet())
+                    {
+                        kniha = entry.getValue();
+                        if (kniha instanceof Roman) 
+                        {
+                            Roman roman = (Roman) kniha;
+                            String zanr = roman.getZanrRomanu().name();
+                            if(zanr.equalsIgnoreCase(zanrHledat))
+                            {
+                                System.out.println(kniha.getNazev());
+                            }   
+                            
+                        }
+                        sc.nextLine();
+                    }
                     break;
                 case 9:
+                    System.out.println("Seznam vypůjčených knih:");
+                    for(Map.Entry<String,Kniha> entry : mojeDatabaze.entrySet())
+                    {
+                        kniha = entry.getValue();
+                        if(!kniha.getDostupnost()){
+                            System.out.println(kniha.getNazev());
+                        }
+                        sc.nextLine();
+                    }
                     break;
                 case 10:
                     break;
